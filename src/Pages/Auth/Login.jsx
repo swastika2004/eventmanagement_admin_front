@@ -1,4 +1,15 @@
+import { useForm } from "react-hook-form";
+
 const Login=()=>{
+   const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit=(data)=>{
+    console.log("data",data);
+    
+  }
     return(
         <>
          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -13,7 +24,7 @@ const Login=()=>{
         </div>
 
         {/* Form */}
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -23,6 +34,7 @@ const Login=()=>{
               type="email"
               placeholder="admin@example.com"
               className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              {...register("email")}
             />
           </div>
 
@@ -35,6 +47,7 @@ const Login=()=>{
               type="password"
               placeholder="••••••••"
               className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              {...register("password")}
             />
           </div>
 
