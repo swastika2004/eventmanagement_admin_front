@@ -8,15 +8,24 @@ import Dashboard from './Pages/Dashboard/Dashboard'
 import Sidebar from './Pages/Sidebar'
 import Category from './Pages/CategoryManage/Category'
 function App() {
-
+const storedToken = sessionStorage.getItem("event_token");
+const isToken = storedToken ? JSON.parse(storedToken).token : null;
 
   return (
     <>
     <Router>
       <Routes>
         <Route path='/' element={<Login/>}/>
-        <Route path='/dashboard' element={<Sidebar/>}/>
-        <Route path='/category' element={<Category/>}/>
+        {
+          isToken&&(
+            <>
+              <Route path='/dashboard' element={<Sidebar/>}/>
+              <Route path='/category' element={<Category/>}/>
+            </>
+          
+          )
+        }
+      
       </Routes>
     </Router>
   

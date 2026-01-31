@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../Reducer/AuthSlice";
 
 const Login=()=>{
   const navigate=useNavigate()
+  const dispatch=useDispatch()
    const {
     register,
     handleSubmit,
@@ -10,6 +13,11 @@ const Login=()=>{
   } = useForm();
   const onSubmit=(data)=>{
     console.log("data",data);
+    dispatch(login(data)).then((res)=>{
+      if(res.payload?.status_code===200){
+        navigate("/dashboard")
+      }
+    })
     
   }
   const handleDashboard=()=>{
@@ -30,7 +38,7 @@ const Login=()=>{
 
         {/* Form */}
         <form className="space-y-5" 
-        //onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         >
           {/* Email */}
           <div>
@@ -71,8 +79,8 @@ const Login=()=>{
 
           {/* Button */}
           <button
-            type="button"
-            onClick={handleDashboard}
+         
+         
             className="w-full py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition"
           >
             Login
