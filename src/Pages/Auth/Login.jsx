@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Login=()=>{
+  const navigate=useNavigate()
    const {
     register,
     handleSubmit,
@@ -9,6 +11,9 @@ const Login=()=>{
   const onSubmit=(data)=>{
     console.log("data",data);
     
+  }
+  const handleDashboard=()=>{
+    navigate('/dashboard')
   }
     return(
         <>
@@ -24,7 +29,9 @@ const Login=()=>{
         </div>
 
         {/* Form */}
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-5" 
+        //onSubmit={handleSubmit(onSubmit)}
+        >
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
@@ -64,7 +71,8 @@ const Login=()=>{
 
           {/* Button */}
           <button
-            type="submit"
+            type="button"
+            onClick={handleDashboard}
             className="w-full py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition"
           >
             Login
