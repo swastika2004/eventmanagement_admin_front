@@ -1,25 +1,3 @@
-// import { Outlet, NavLink } from "react-router-dom";
-
-// const Sidebar = () => {
-//   return (
-//     <div className="flex h-screen">
-//       <aside className="w-64 bg-gray-900 text-white">
-//         <NavLink to="/dashboard">Dashboard</NavLink>
-//         <NavLink to="/category">Category</NavLink>
-//       </aside>
-
-//       <main className="flex-1 p-6 bg-gray-100">
-//         {/* THIS IS WHERE PAGES RENDER */}
-//         <Outlet />
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
-
-
-
 import { NavLink, Outlet } from "react-router-dom";
 
 const Sidebar = () => {
@@ -32,6 +10,7 @@ const Sidebar = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
+          {/* Dashboard */}
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
@@ -43,6 +22,7 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
 
+          {/* Category Management */}
           <NavLink
             to="/category"
             className={({ isActive }) =>
@@ -52,6 +32,18 @@ const Sidebar = () => {
             }
           >
             Category Management
+          </NavLink>
+
+          {/* Event Management (NEW) */}
+          <NavLink
+            to="/event"
+            className={({ isActive }) =>
+              `block px-4 py-2 rounded-lg ${
+                isActive ? "bg-gray-700" : "hover:bg-gray-800"
+              }`
+            }
+          >
+            Event Management
           </NavLink>
         </nav>
       </aside>
@@ -63,7 +55,6 @@ const Sidebar = () => {
         </header>
 
         <main className="flex-1 p-6 overflow-y-auto">
-          {/* THIS IS WHERE DASHBOARD / CATEGORY LOAD */}
           <Outlet />
         </main>
       </div>
@@ -72,4 +63,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
