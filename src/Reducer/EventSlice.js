@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../Store/Api";
 
-/* ================= FETCH CATEGORIES ================= */
-export const fetchCategories = createAsyncThunk(
-  "category/fetch",
+/* ================= FETCH EVENTS ================= */
+export const fetchEvents = createAsyncThunk(
+  "event/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/categories/getAllCategory");
+      const response = await api.get("/events/getAllEvent");
 
       if (response?.data?.status_code === 201) {
         return response.data;
@@ -21,12 +21,12 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-/* ================= ADD CATEGORY ================= */
-export const addCategory = createAsyncThunk(
-  "category/add",
+/* ================= ADD EVENT ================= */
+export const addEvent = createAsyncThunk(
+  "event/add",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/category", data);
+      const response = await api.post("/event", data);
 
       if (response?.data?.status_code === 201) {
         return response.data;
@@ -41,12 +41,12 @@ export const addCategory = createAsyncThunk(
   }
 );
 
-/* ================= UPDATE CATEGORY ================= */
-export const updateCategory = createAsyncThunk(
-  "category/update",
+/* ================= UPDATE EVENT ================= */
+export const updateEvent = createAsyncThunk(
+  "event/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/category/${id}`, data);
+      const response = await api.put(/event/${id}, data);
 
       if (response?.data?.status_code === 201) {
         return response.data;
@@ -61,12 +61,12 @@ export const updateCategory = createAsyncThunk(
   }
 );
 
-/* ================= DELETE CATEGORY ================= */
-export const deleteCategory = createAsyncThunk(
-  "category/delete",
+/* ================= DELETE EVENT ================= */
+export const deleteEvent = createAsyncThunk(
+  "event/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.delete(`/category/${id}`);
+      const response = await api.delete(/event/${id});
 
       if (response?.data?.status_code === 201) {
         return id;
@@ -81,52 +81,51 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
-/* ================= SLICE ================= */
 const initialState = {
   loading: false,
   error: null,
-  categoryList: []
+  eventList: []
 };
-
-const CategorySlice = createSlice({
-  name: "category",
+const EventSlice = createSlice({
+  name: "event",
   initialState,
   reducers: {},
   extraReducers: (builder) =>
     builder
       /* FETCH */
-      .addCase(fetchCategories.pending, (state) => {
+      .addCase(fetchEvents.pending, (state) => {
         state.loading = true;
         state.error = null;
+
       })
-      .addCase(fetchCategories.fulfilled, (state, { payload }) => {
+      .addCase(fetchEvents.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.categoryList = payload;
+        state.eventList = payload;
       })
-      .addCase(fetchCategories.rejected, (state, { payload }) => {
+      .addCase(fetchEvents.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       })
 
       /* ADD */
-      .addCase(addCategory.fulfilled, (state, { payload }) => {
-        state.categoryList.push(payload?.data);
+      .addCase(addEvents.fulfilled, (state, { payload }) => {
+        state.eventList.push(payload?.data);
       })
 
       /* UPDATE */
-      .addCase(updateCategory.fulfilled, (state, { payload }) => {
+      .addCase(updateEvent.fulfilled, (state, { payload }) => { 
         const updated = payload?.data;
-        state.categoryList = state.categoryList.map((cat) =>
-          cat._id === updated._id ? updated : cat
+        state.eventList = state.eventList.map((event) =>
+          event._id === updated._id ? updated : event
         );
       })
 
       /* DELETE */
-      .addCase(deleteCategory.fulfilled, (state, { payload }) => {
-        state.categoryList = state.categoryList.filter(
-          (cat) => cat._id !== payload
+      .addCase(deleteEvent.fulfilled, (state, { payload }) => {
+        state.eventList = state.eventList.filter(
+          (event) => event._id !== payload
         );
       })
 });
 
-export default CategorySlice.reducer;
+export default EventSlice.reducer;
