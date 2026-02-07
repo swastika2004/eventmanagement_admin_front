@@ -6,7 +6,7 @@ export const fetchCategories = createAsyncThunk(
   "category/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/category");
+      const response = await api.get("/categories/getAllCategory");
 
       if (response?.data?.status_code === 200) {
         return response.data;
@@ -101,7 +101,7 @@ const CategorySlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.categoryList = payload?.data || [];
+        state.categoryList = payload;
       })
       .addCase(fetchCategories.rejected, (state, { payload }) => {
         state.loading = false;
