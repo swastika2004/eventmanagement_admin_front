@@ -6,9 +6,9 @@ export const fetchEvents = createAsyncThunk(
   "event/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/events/getAllEvent");
+      const response = await api.get("/event/getAllEvent");
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return response.data;
       } else {
         return rejectWithValue(response?.data);
@@ -28,7 +28,7 @@ export const addEvent = createAsyncThunk(
     try {
       const response = await api.post("/event", data);
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return response.data;
       } else {
         return rejectWithValue(response?.data);
@@ -46,9 +46,9 @@ export const updateEvent = createAsyncThunk(
   "event/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.put(/event/${id}, data);
+      const response = await api.put(`/event/${id}`, data);
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return response.data;
       } else {
         return rejectWithValue(response?.data);
@@ -66,9 +66,9 @@ export const deleteEvent = createAsyncThunk(
   "event/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.delete(/event/${id});
+      const response = await api.delete(`/event/${id}`);
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return id;
       } else {
         return rejectWithValue(response?.data);
@@ -108,7 +108,7 @@ const EventSlice = createSlice({
       })
 
       /* ADD */
-      .addCase(addEvents.fulfilled, (state, { payload }) => {
+      .addCase(addEvent.fulfilled, (state, { payload }) => {
         state.eventList.push(payload?.data);
       })
 

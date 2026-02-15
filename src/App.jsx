@@ -3,6 +3,9 @@ import Login from "./Pages/Auth/Login";
 import Sidebar from "./Pages/Sidebar";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Category from "./Pages/CategoryManage/Category";
+import ManageEvent from "./Pages/ManageEvent/ManageEvent";
+import Addcategory from "./Pages/CategoryManage/Addcategory";
+
 
 function App() {
   const storedToken = sessionStorage.getItem("event_token");
@@ -22,6 +25,8 @@ function App() {
 
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="category" element={<Category />} />
+            <Route path="event" element={<ManageEvent />} /> 
+            <Route path="/add-category" element={<Addcategory/>}/>
           </Route>
         )}
 

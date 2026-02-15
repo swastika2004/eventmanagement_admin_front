@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../Reducer/CategorySlice";
+import { useNavigate } from "react-router-dom";
 
 
 const Category = () => {
@@ -12,17 +13,22 @@ const Category = () => {
 
   const {categoryList}=useSelector((state)=>state?.category)
   const dispatch=useDispatch()
+  const navigate=useNavigate();
   useEffect(()=>{
 dispatch(fetchCategories())
   },[])
 
   console.log("categoryList",categoryList);
+
+  const handleAddCategory=()=>{
+navigate("/add-category")
+  }
   
   return (
     <div className="bg-white p-6 rounded-2xl shadow">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Category Management</h2>
-        <button className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+        <button onClick={()=>handleAddCategory()} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
           Add Category
         </button>
       </div>

@@ -8,7 +8,7 @@ export const fetchCategories = createAsyncThunk(
     try {
       const response = await api.get("/categories/getAllCategory");
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return response.data;
       } else {
         return rejectWithValue(response?.data);
@@ -26,7 +26,7 @@ export const addCategory = createAsyncThunk(
   "category/add",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/category", data);
+      const response = await api.post("/categories/create-category", data);
 
       if (response?.data?.status_code === 201) {
         return response.data;
@@ -85,7 +85,8 @@ export const deleteCategory = createAsyncThunk(
 const initialState = {
   loading: false,
   error: null,
-  categoryList: []
+  categoryList: [],
+  categoryData:""
 };
 
 const CategorySlice = createSlice({
@@ -110,7 +111,7 @@ const CategorySlice = createSlice({
 
       /* ADD */
       .addCase(addCategory.fulfilled, (state, { payload }) => {
-        state.categoryList.push(payload?.data);
+        state.categoryData=payload
       })
 
       /* UPDATE */
