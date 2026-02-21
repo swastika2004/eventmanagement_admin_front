@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../../Reducer/EventSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const ManageEvent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { eventList, loading, error } = useSelector(
     (state) => state.event
   );
@@ -18,13 +20,17 @@ const ManageEvent = () => {
   }, [dispatch]);
 
  console.log("eventList",eventList);
- 
+
+
+ const handleaddEvent=()=>{
+  navigate("/add-event")
+ }
   return (
    <>
    <div className="bg-white p-6 rounded-2xl shadow">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Event Management</h2>
-        <button className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+        <button onClick={()=>{handleaddEvent()}} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
           Add Events
         </button>
       </div>

@@ -23,6 +23,12 @@ dispatch(fetchCategories())
   const handleAddCategory=()=>{
 navigate("/add-category")
   }
+
+  const handleEdit=(id)=>{
+    console.log("id",id);
+    
+    navigate(`/edit-category`,{state:{id:id}})
+  }
   
   return (
     <div className="bg-white p-6 rounded-2xl shadow">
@@ -49,7 +55,10 @@ navigate("/add-category")
               <td className="py-2">{cat.categoryName}</td>
                <td className="py-2">{cat.description}</td>
               <td className="py-2 space-x-2">
-                <button className="px-3 py-1 bg-blue-500 text-white rounded">
+                <button
+                type="button"
+                onClick={()=>handleEdit(cat?._id)}
+                className="px-3 py-1 bg-blue-500 text-white rounded">
                   Edit
                 </button>
                 <button className="px-3 py-1 bg-red-500 text-white rounded">
