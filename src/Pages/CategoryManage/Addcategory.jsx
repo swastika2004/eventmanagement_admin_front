@@ -76,7 +76,7 @@ const Addcategory=()=>{
 
         </form>
       </div>
-    </div>
+        </div>
         </>
     )
 }
