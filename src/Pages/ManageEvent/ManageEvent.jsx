@@ -25,6 +25,9 @@ const ManageEvent = () => {
  const handleaddEvent=()=>{
   navigate("/add-event")
  }
+ const handleEdit=(id)=>{
+  navigate(`/edit-event`,{state:{id:id}})
+ }
   return (
    <>
    {/* <div className="bg-white p-6 rounded-2xl shadow">
@@ -136,7 +139,7 @@ const ManageEvent = () => {
             <td className="p-3">{cat.updatedAt}</td>
 
             <td className="p-3 space-x-2 whitespace-nowrap">
-              <button className="px-3 py-1 bg-blue-500 text-white rounded">
+              <button onClick={()=>handleEdit(cat?._id)} className="px-3 py-1 bg-blue-500 text-white rounded">
                 Edit
               </button>
               <button className="px-3 py-1 bg-red-500 text-white rounded">

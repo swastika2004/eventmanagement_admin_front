@@ -9,6 +9,7 @@ import PublicRoute from "./Pages/PublicRoute/PublicRoute";
 import PrivateRoute from "./Pages/PrivateRoute/PrivateRoute";
 import EditCategory from "./Pages/CategoryManage/EditCategory";
 import AddEvent from "./Pages/ManageEvent/AddEvent";
+import EditEvent from "./Pages/ManageEvent/EditEvent";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="add-category" element={<Addcategory />} />
              <Route path="edit-category" element={<EditCategory />} />
              <Route path="add-event" element={<AddEvent/>} />
+             <Route path="edit-event" element={<EditEvent/>} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

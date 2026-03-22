@@ -1,65 +1,58 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { fetchCategories } from "../../Reducer/CategorySlice";
-import { useForm } from "react-hook-form";
-import { addEvent } from "../../Reducer/EventSlice";
-import { toast } from "react-toastify";
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useLocation } from "react-router-dom"
+import { fetchEvents, fetchSingleEvents } from "../../Reducer/EventSlice"
+import { useForm } from "react-hook-form"
+import { fetchCategories } from "../../Reducer/CategorySlice"
 
-const AddEvent = () => {
+const EditEvent=()=>{
+    const{singleEventData,eventList}=useSelector((state)=>state?.event)
+    const {categoryList}=useSelector((state)=>state?.category)
+    const location=useLocation()
+    const id=location?.state?.id
+    const dispatch=useDispatch()
 
-const {categoryList}=useSelector((state)=>state?.category)
-  const dispatch=useDispatch()
-  const navigate=useNavigate();
-  const [preview, setPreview] = useState(null);
-  useEffect(()=>{
-dispatch(fetchCategories())
-  },[])
+    useEffect(()=>{
+   dispatch(fetchCategories())
+     },[])
+    useEffect(()=>{
+        dispatch(fetchSingleEvents({id:id}))
+    },[])
+    console.log("singleEventData",singleEventData);
 
-  const handleImageChange = (e) => {
-  const file = e.target.files[0];
+      const {
+              register,
+              handleSubmit,
+              setValue,
+              formState: { errors },
+            } = useForm();
+    useEffect(()=>{
+        setValue("eventName",singleEventData?.events?.eventName)
+        setValue("description",singleEventData?.events?.description)
+        setValue("category",singleEventData?.events?.category?.categoryName)
+        setValue("eventDate",singleEventData?.events?.eventDate)
+        setValue("venue",singleEventData?.events?.venue)
+        setValue("location",singleEventData?.events?.location)
+        setValue("totalSeats",singleEventData?.events?.totalSeats)
+        setValue("availableSeats",singleEventData?.events?.availableSeats)
+        setValue("price",singleEventData?.events?.price)
+        setValue("status",singleEventData?.events?.status)
+    },[singleEventData])
 
-  if (file) {
-    setPreview(URL.createObjectURL(file));
-  }
-};
-   const {
-          register,
-          handleSubmit,
-          formState: { errors },
-        } = useForm();
-
-        const onsubmit=(data)=>{
-          const formData=new FormData();
-          formData.append("eventName",data?.eventName);
-          formData.append("description",data?.description);
-          formData.append("category",data?.category);
-          formData.append("eventDate",data?.eventDate);
-          formData.append("venue",data?.venue);
-          formData.append("location",data?.location);
-          formData.append("totalSeats",data?.totalSeats);
-          formData.append("availableSeats",data?.availableSeats);
-          formData.append("price",data?.price);
-          formData.append("status",data?.status);
-          formData.append("image", data.image[0]);
-          dispatch(addEvent(formData)).then((res)=>{
-            if(res?.payload?.status_code===200||res?.payload?.status_code===200)
-            {
-              toast.success(res?.payload?.message)
-            }s
-          })
-
-        }
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    
+     return(
+        <>
+         <div className="flex justify-center items-center min-h-screen bg-gray-100">
 
       <div className="bg-white w-[500px] p-6 rounded-2xl shadow">
 
         <h2 className="text-2xl font-semibold text-center mb-4">
-          Add Event
+          Edit Event
         </h2>
 
-        <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
+        <form 
+        // onSubmit={handleSubmit(onsubmit)} 
+        className="space-y-4">
 
           {/* Event Name */}
           <div>
@@ -225,7 +218,7 @@ dispatch(fetchCategories())
           </div>
 
           {/* Image */}
-              <div>
+              {/* <div>
             <label className="block mb-1">Image</label>
 
             <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
@@ -267,7 +260,7 @@ dispatch(fetchCategories())
                 {errors?.image?.message}
               </span>
             )}
-          </div>
+              </div> */}
 
           {/* Button */}
           <button
@@ -282,7 +275,8 @@ dispatch(fetchCategories())
       </div>
 
     </div>
-  );
-};
+        </>
+     )
 
-export default AddEvent;
+    }
+    export default EditEvent
