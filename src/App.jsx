@@ -10,6 +10,7 @@ import PrivateRoute from "./Pages/PrivateRoute/PrivateRoute";
 import EditCategory from "./Pages/CategoryManage/EditCategory";
 import AddEvent from "./Pages/ManageEvent/AddEvent";
 import EditEvent from "./Pages/ManageEvent/EditEvent";
+import BookingList from "./Pages/Bookings/BookingList";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
              <Route path="edit-category" element={<EditCategory />} />
              <Route path="add-event" element={<AddEvent/>} />
              <Route path="edit-event" element={<EditEvent/>} />
+             <Route path="orders" element={<BookingList />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

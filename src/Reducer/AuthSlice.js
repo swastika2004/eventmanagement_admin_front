@@ -36,7 +36,8 @@ const AuthSlice=createSlice(
             logout: (state) => {
                 sessionStorage.removeItem('event_token')
                 localStorage.clear()
-
+                state.loginData = {}
+                state.error = false
             }
         },
         extraReducers:(builder)=>
