@@ -32,13 +32,17 @@ const EditCategory=()=>{
             id:id,
             data: data 
         })).then((res)=>{
-            console.log("res",res);
             if(res?.payload?.status_code===200){
-                toast.success(res?.payload?.message)
+                toast.success(res?.payload?.message || "Category updated successfully!");
+                navigate("/category");
+            } else {
+                toast.error(res?.payload?.message || "Failed to update category!");
             }
-            
-        })
+        }).catch((err) => {
+            toast.error("Something went wrong!");
+        });
     }
+
     return(
         <>
          <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">

@@ -1,22 +1,60 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchCategories } from "../../Reducer/CategorySlice";
 import { useForm } from "react-hook-form";
+import { addEvent } from "../../Reducer/EventSlice";
+import { toast } from "react-toastify";
 
 const AddEvent = () => {
 
 const {categoryList}=useSelector((state)=>state?.category)
   const dispatch=useDispatch()
   const navigate=useNavigate();
+  const [preview, setPreview] = useState(null);
   useEffect(()=>{
 dispatch(fetchCategories())
   },[])
+
+  const handleImageChange = (e) => {
+  const file = e.target.files[0];
+
+  if (file) {
+    setPreview(URL.createObjectURL(file));
+  }
+};
    const {
           register,
           handleSubmit,
           formState: { errors },
         } = useForm();
+
+        const onsubmit = (data) => {
+          const formData = new FormData();
+          formData.append("eventName", data?.eventName);
+          formData.append("description", data?.description);
+          formData.append("category", data?.category);
+          formData.append("eventDate", data?.eventDate);
+          formData.append("venue", data?.venue);
+          formData.append("location", data?.location);
+          formData.append("totalSeats", data?.totalSeats);
+          formData.append("availableSeats", data?.availableSeats);
+          formData.append("price", data?.price);
+          formData.append("status", data?.status);
+          formData.append("image", data.image[0]);
+
+          dispatch(addEvent(formData)).then((res) => {
+            if (res?.payload?.status_code === 200 || res?.payload?.status_code === 201) {
+              toast.success(res?.payload?.message || "Event created successfully!");
+              navigate("/event");
+            } else {
+              toast.error(res?.payload?.message || "Event creation failed!");
+            }
+          }).catch((err) => {
+            toast.error("Something went wrong. Please try again.");
+          });
+        }
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
 
@@ -26,7 +64,7 @@ dispatch(fetchCategories())
           Add Event
         </h2>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
 
           {/* Event Name */}
           <div>
@@ -180,9 +218,9 @@ dispatch(fetchCategories())
             <select className="w-full border p-2 rounded"
             {...register("status",{required:"Status is required"})}
             >
-              <option>Draft</option>
-              <option>Published</option>
-              <option>Cancelled</option>
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="cancelled">Cancelled</option>
             </select>
              {
               errors?.status&&(
@@ -192,32 +230,49 @@ dispatch(fetchCategories())
           </div>
 
           {/* Image */}
-         <div>
-                <label className="block mb-1">Image</label>
+              <div>
+            <label className="block mb-1">Image</label>
 
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+            <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
 
+              {
+                preview ? (
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="h-32 object-cover"
+                  />
+                ) : (
+                  <>
                     <span className="text-gray-500">
-                    Upload Event Image
+                      Upload Event Image
                     </span>
 
                     <span className="text-xs text-gray-400">
-                    PNG, JPG allowed
+                      PNG, JPG allowed
                     </span>
+                  </>
+                )
+              }
 
-                    <input
-                    {...register("image",{required:"Image is required"})}
-                    type="file"
-                    className="hidden"
-                    />
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                {...register("image", {
+                  required: "Image is required",
+                  onChange: handleImageChange,
+                })}
+              />
 
-                </label>
-                 {
-              errors?.image&&(
-                <span className="text-red-500">{errors?.image?.message}</span>
-              )
-             }
-                </div>
+            </label>
+
+            {errors?.image && (
+              <span className="text-red-500">
+                {errors?.image?.message}
+              </span>
+            )}
+          </div>
 
           {/* Button */}
           <button
