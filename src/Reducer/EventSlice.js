@@ -23,7 +23,7 @@ export const fetchEvents = createAsyncThunk(
 
 export const fetchSingleEvents = createAsyncThunk(
   "event/fetchSingleEvents",
-  async ({id}, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const response = await api.get(`/event/getSingleEvent/${id}`);
 
@@ -47,7 +47,7 @@ export const addEvent = createAsyncThunk(
     try {
       const response = await api.post("/event/createEvent", userInput);
 
-      if (response?.data?.status_code === 201||response?.data?.status_code === 200) {
+      if (response?.data?.status_code === 201 || response?.data?.status_code === 200) {
         return response.data;
       } else {
         return rejectWithValue(response?.data);
@@ -65,7 +65,8 @@ export const updateEvent = createAsyncThunk(
   "event/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/event/${id}`, data);
+      const response = await api.put(`/event/updateEvent/${id}`, data);
+
 
       if (response?.data?.status_code === 200) {
         return response.data;
@@ -85,7 +86,8 @@ export const deleteEvent = createAsyncThunk(
   "event/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.delete(`/event/${id}`);
+      const response = await api.delete(`/event/deleteEvent/${id}`);
+      console.log("response", response);
 
       if (response?.data?.status_code === 200) {
         return id;
@@ -104,8 +106,8 @@ const initialState = {
   loading: false,
   error: null,
   eventList: [],
-  createEventData:"",
-  singleEventData:{}
+  createEventData: "",
+  singleEventData: {}
 };
 const EventSlice = createSlice({
   name: "event",
@@ -127,31 +129,64 @@ const EventSlice = createSlice({
         state.loading = false;
         state.error = payload;
       })
-      .addCase(addEvent.pending,(state)=>{
-        state.loading=true
+      .addCase(addEvent.pending, (state) => {
+        state.loading = true
       })
       .addCase(addEvent.fulfilled, (state, { payload }) => {
-        state.loading=false
-        state.createEventData=payload
+        state.loading = false
+        state.createEventData = payload
       })
-      .addCase(addEvent.rejected,(state,{payload})=>{
-        state.loading=false
-        state.error=payload
+      .addCase(addEvent.rejected, (state, { payload }) => {
+        state.loading = false
+        state.error = payload
       })
-      .addCase(fetchSingleEvents.pending,(state)=>{
-        state.loading=true
+      .addCase(fetchSingleEvents.pending, (state) => {
+        state.loading = true
       })
       .addCase(fetchSingleEvents.fulfilled, (state, { payload }) => {
-        state.loading=false
-        state.singleEventData=payload
+        state.loading = false
+        state.singleEventData = payload
       })
-      .addCase(fetchSingleEvents.rejected,(state,{payload})=>{
-        state.loading=false
-        state.error=payload
+      .addCase(fetchSingleEvents.rejected, (state, { payload }) => {
+        state.loading = false
+        state.error = payload
       })
 
       /* UPDATE */
-    
+      .addCase(updateEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateEvent.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        // Update the event in the list if it exists
+        if (state.eventList && state.eventList.events) {
+          state.eventList.events = state.eventList.events.map((event) =>
+            event._id === payload?.events?._id ? payload.events : event
+          );
+        }
+      })
+      .addCase(updateEvent.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      /* DELETE */
+      .addCase(deleteEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteEvent.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        // Assuming eventList has an 'events' array based on ManageEvent.jsx usage
+        if (state.eventList && state.eventList.events) {
+          state.eventList.events = state.eventList.events.filter(
+            (event) => event._id !== payload
+          );
+        }
+      })
+      .addCase(deleteEvent.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
 });
 
 export default EventSlice.reducer;

@@ -12,9 +12,13 @@ import AddEvent from "./Pages/ManageEvent/AddEvent";
 import EditEvent from "./Pages/ManageEvent/EditEvent";
 import BookingList from "./Pages/Bookings/BookingList";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/" element={<PrivateRoute><Sidebar /></PrivateRoute>}>

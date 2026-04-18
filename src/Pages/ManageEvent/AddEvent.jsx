@@ -29,27 +29,32 @@ dispatch(fetchCategories())
           formState: { errors },
         } = useForm();
 
-        const onsubmit=(data)=>{
-          const formData=new FormData();
-          formData.append("eventName",data?.eventName);
-          formData.append("description",data?.description);
-          formData.append("category",data?.category);
-          formData.append("eventDate",data?.eventDate);
-          formData.append("venue",data?.venue);
-          formData.append("location",data?.location);
-          formData.append("totalSeats",data?.totalSeats);
-          formData.append("availableSeats",data?.availableSeats);
-          formData.append("price",data?.price);
-          formData.append("status",data?.status);
+        const onsubmit = (data) => {
+          const formData = new FormData();
+          formData.append("eventName", data?.eventName);
+          formData.append("description", data?.description);
+          formData.append("category", data?.category);
+          formData.append("eventDate", data?.eventDate);
+          formData.append("venue", data?.venue);
+          formData.append("location", data?.location);
+          formData.append("totalSeats", data?.totalSeats);
+          formData.append("availableSeats", data?.availableSeats);
+          formData.append("price", data?.price);
+          formData.append("status", data?.status);
           formData.append("image", data.image[0]);
-          dispatch(addEvent(formData)).then((res)=>{
-            if(res?.payload?.status_code===200||res?.payload?.status_code===200)
-            {
-              toast.success(res?.payload?.message)
-            }s
-          })
 
+          dispatch(addEvent(formData)).then((res) => {
+            if (res?.payload?.status_code === 200 || res?.payload?.status_code === 201) {
+              toast.success(res?.payload?.message || "Event created successfully!");
+              navigate("/event");
+            } else {
+              toast.error(res?.payload?.message || "Event creation failed!");
+            }
+          }).catch((err) => {
+            toast.error("Something went wrong. Please try again.");
+          });
         }
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
 

@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addCategory } from "../../Reducer/CategorySlice";
+import { toast } from "react-toastify";
+
 
 const Addcategory=()=>{
     const navigate=useNavigate()
@@ -11,11 +13,19 @@ const Addcategory=()=>{
         handleSubmit,
         formState: { errors },
       } = useForm();
-    const onSubmit=(data)=>{
-        dispatch(addCategory(data))
-        
-        
+    const onSubmit = (data) => {
+        dispatch(addCategory(data)).then((res) => {
+            if (res?.payload?.status_code === 200 || res?.payload?.status_code === 201) {
+                toast.success(res?.payload?.message || "Category added successfully!");
+                navigate("/category");
+            } else {
+                toast.error(res?.payload?.message || "Failed to add category!");
+            }
+        }).catch((err) => {
+            toast.error("Something went wrong!");
+        });
     }
+
     return(
         <>
          <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
