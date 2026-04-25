@@ -23,7 +23,7 @@ export const fetchCategories = createAsyncThunk(
 
 export const singleCategory = createAsyncThunk(
   "category/singleCategory",
-  async ({id}, { rejectWithValue }) => {
+  async ({ id }, { rejectWithValue }) => {
     try {
       const response = await api.get(`/categories/get-singlecategory/${id}`);
 
@@ -66,6 +66,7 @@ export const updateCategory = createAsyncThunk(
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const response = await api.put(`/categories/updateCategory/${id}`, data);
+      console.log("responseUpdate", response);
 
       if (response?.data?.status_code === 200) {
         return response.data;
@@ -85,9 +86,9 @@ export const deleteCategory = createAsyncThunk(
   "category/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.delete(`/category/${id}`);
+      const response = await api.delete(`/categories/deleteCategory/${id}`);
 
-      if (response?.data?.status_code === 201) {
+      if (response?.data?.status_code === 200) {
         return id;
       } else {
         return rejectWithValue(response?.data);
@@ -105,8 +106,8 @@ const initialState = {
   loading: false,
   error: null,
   categoryList: [],
-  categoryData:"",
-  singlecate:{}
+  categoryData: "",
+  singlecate: {}
 };
 
 const CategorySlice = createSlice({
@@ -128,7 +129,7 @@ const CategorySlice = createSlice({
         state.loading = false;
         state.error = payload;
       })
-        .addCase(singleCategory.pending, (state) => {
+      .addCase(singleCategory.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -143,22 +144,26 @@ const CategorySlice = createSlice({
 
       /* ADD */
       .addCase(addCategory.fulfilled, (state, { payload }) => {
-        state.categoryData=payload
+        state.categoryData = payload
       })
 
       /* UPDATE */
       .addCase(updateCategory.fulfilled, (state, { payload }) => {
         const updated = payload?.data;
-        state.categoryList = state.categoryList.map((cat) =>
-          cat._id === updated._id ? updated : cat
-        );
+        if (state.categoryList && state.categoryList.categories) {
+          state.categoryList.categories = state.categoryList.categories.map((cat) =>
+            cat._id === updated._id ? updated : cat
+          );
+        }
       })
 
       /* DELETE */
       .addCase(deleteCategory.fulfilled, (state, { payload }) => {
-        state.categoryList = state.categoryList.filter(
-          (cat) => cat._id !== payload
-        );
+        if (state.categoryList && state.categoryList.categories) {
+          state.categoryList.categories = state.categoryList.categories.filter(
+            (cat) => cat._id !== payload
+          );
+        }
       })
 });
 
