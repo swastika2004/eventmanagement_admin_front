@@ -56,9 +56,9 @@ dispatch(fetchCategories())
         }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
 
-      <div className="bg-white w-[500px] p-6 rounded-2xl shadow">
+      <div className="bg-white w-full max-w-[500px] p-4 md:p-6 rounded-2xl shadow">
 
         <h2 className="text-2xl font-semibold text-center mb-4">
           Add Event

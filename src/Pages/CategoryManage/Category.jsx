@@ -50,46 +50,48 @@ const Category = () => {
   return (
     <>
       <div className="bg-white p-6 rounded-2xl shadow">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <h2 className="text-xl font-semibold">Category Management</h2>
-          <button onClick={() => handleAddCategory()} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+          <button onClick={() => handleAddCategory()} className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 w-full sm:w-auto">
             Add Category
           </button>
         </div>
 
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left py-2">#</th>
-              <th className="text-left py-2">Category Name</th>
-              <th className="text-left py-2">Category Description</th>
-              <th className="text-left py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categoryList?.categories?.map((cat, index) => (
-              <tr key={cat._id} className="border-b last:border-none">
-                <td className="py-2">{index + 1}</td>
-                <td className="py-2">{cat.categoryName}</td>
-                <td className="py-2">{cat.description}</td>
-                <td className="py-2 space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(cat?._id)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openDeleteModal(cat?._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[600px] border-collapse">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2">#</th>
+                <th className="text-left py-2">Category Name</th>
+                <th className="text-left py-2">Category Description</th>
+                <th className="text-left py-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {categoryList?.categories?.map((cat, index) => (
+                <tr key={cat._id} className="border-b last:border-none">
+                  <td className="py-2">{index + 1}</td>
+                  <td className="py-2">{cat.categoryName}</td>
+                  <td className="py-2">{cat.description}</td>
+                  <td className="py-2 space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(cat?._id)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openDeleteModal(cat?._id)}
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Confirmation Modal */}

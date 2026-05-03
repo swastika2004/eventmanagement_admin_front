@@ -111,12 +111,12 @@ const ManageEvent = () => {
     </div> */}
 
     <div className="bg-white p-6 rounded-2xl shadow">
-  <div className="flex justify-between items-center mb-4">
+  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
     <h2 className="text-xl font-semibold">Event Management</h2>
 
     <button
       onClick={handleaddEvent}
-      className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+      className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 w-full sm:w-auto"
     >
       Add Events
     </button>
